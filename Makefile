@@ -2,7 +2,6 @@ build:
 	go build -o farmer main.go
 
 deps:
-	go get -u github.com/tools/godep
-	godep restore
+    go get ./...
 
 .PHONY: build deps
