@@ -40,24 +40,24 @@ func GetVersion() string {
 	return version
 }
 
-// RemoveContainers will remove containers with the domain suffix
-// and return a count of containers removed or a error.
-func RemoveContainers(domain string) (int, error) {
+// GetContainers returns all containers for a domain or a error.
+func GetContainers(domain string) ([]types.Container, error) {
+
 	client, err := getDockerClient()
 	ctx := context.Background()
 
 	if err != nil {
-		return 0, err
+		return nil, err
 	}
 
 	options := types.ContainerListOptions{All: true}
 	containers, err := client.ContainerList(ctx, options)
 
 	if err != nil {
-		return 0, err
+		return nil, err
 	}
 
-	count := 0
+	result := []types.Container{}
 	for _, c := range containers {
 		// No name on the container.
 		if len(c.Names) < 1 {
@@ -69,6 +69,30 @@ func RemoveContainers(domain string) (int, error) {
 			continue
 		}
 
+		result = append(result, c)
+	}
+
+	return result, nil
+}
+
+// RemoveContainers will remove containers with the domain suffix
+// and return a count of containers removed or a error.
+func RemoveContainers(domain string) (int, error) {
+	client, err := getDockerClient()
+	ctx := context.Background()
+
+	if err != nil {
+		return 0, err
+	}
+
+	containers, err := GetContainers(domain)
+
+	if err != nil {
+		return 0, err
+	}
+
+	count := 0
+	for _, c := range containers {
 		// Try to force remove the container.
 		if err := client.ContainerRemove(ctx, c.ID, types.ContainerRemoveOptions{
 			RemoveVolumes: true,

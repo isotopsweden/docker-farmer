@@ -62,7 +62,26 @@ func main() {
 	docker.SetVersion(config.Docker.Version)
 
 	// Index route.
-	http.HandleFunc("/", handlers.IndexHandler)
+	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		fmt.Fprintf(w, "Hello, Docker Farmer!")
+	})
+
+	// Containers route.
+	http.HandleFunc("/containers", func(w http.ResponseWriter, r *http.Request) {
+		containers, err := docker.GetContainers(config.Domain)
+
+		if err != nil {
+			fmt.Fprintf(w, err.Error())
+		} else {
+			j, err := json.Marshal(containers)
+
+			if err != nil {
+				fmt.Fprintf(w, err.Error())
+			} else {
+				fmt.Fprintf(w, string(j))
+			}
+		}
+	})
 
 	// BitBucket service route.
 	http.HandleFunc("/services/bitbucket", handlers.BitbucketHandler)
