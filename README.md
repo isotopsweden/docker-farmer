@@ -17,6 +17,8 @@ Example configuration:
 }
 ```
 
+Docker version is not required.
+
 ## Supported Services
 
 - Bitbucket (should be pull request webhook)
