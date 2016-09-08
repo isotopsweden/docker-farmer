@@ -83,6 +83,32 @@ func main() {
 		}
 	})
 
+	// Sites route.
+	http.HandleFunc("/sites", func(w http.ResponseWriter, r *http.Request) {
+		containers, err := docker.GetContainers(config.Domain)
+
+		if err != nil {
+			fmt.Fprintf(w, err.Error())
+		} else {
+			sites := []string{}
+
+			for _, c := range containers {
+				name := c.Names[0][1:]
+				sites = append(sites, name)
+			}
+
+			j, err := json.Marshal(map[string]interface{}{
+				"sites": sites,
+			})
+
+			if err != nil {
+				fmt.Fprintf(w, err.Error())
+			} else {
+				fmt.Fprintf(w, string(j))
+			}
+		}
+	})
+
 	// BitBucket service route.
 	http.HandleFunc("/services/bitbucket", handlers.BitbucketHandler)
 
