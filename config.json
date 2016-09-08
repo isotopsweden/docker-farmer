@@ -1,0 +1,8 @@
+{
+    "domain": "test.example.com",
+    "docker": {
+        "host": "unix:///var/run/docker.sock",
+        "version": "v1.22"
+    },
+    "listen": ":8080"
+}
