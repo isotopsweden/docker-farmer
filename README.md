@@ -17,7 +17,8 @@ Example configuration:
 }
 ```
 
-Docker version is not required.
+- Docker host is not required. Default is `unix:///var/run/docker.sock`
+- Docker version is not required. Default is empty string.
 
 ## Supported Services
 

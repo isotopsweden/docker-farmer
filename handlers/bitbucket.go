@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"strings"
 
+	"github.com/isotopsweden/docker-farmer/config"
 	"github.com/isotopsweden/docker-farmer/docker"
 )
 
@@ -33,11 +34,7 @@ func BitbucketHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Get the domain.
-	domain, err := getDomain()
-	if err != nil {
-		fmt.Fprintf(w, err.Error())
-		return
-	}
+	domain := config.Get().Domain
 
 	// Check pull request state.
 	if strings.ToLower(p.PullRequest.State) != "merged" {

@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"strings"
 
+	"github.com/isotopsweden/docker-farmer/config"
 	"github.com/isotopsweden/docker-farmer/docker"
 )
 
@@ -26,11 +27,7 @@ func JiraHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Get the domain.
-	domain, err := getDomain()
-	if err != nil {
-		fmt.Fprintf(w, err.Error())
-		return
-	}
+	domain := config.Get().Domain
 
 	// Remove containers for the suffix.
 	suffix := fmt.Sprintf("%s.%s", strings.ToLower(p.Key), domain)

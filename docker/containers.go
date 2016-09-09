@@ -40,9 +40,8 @@ func GetVersion() string {
 	return version
 }
 
-// GetContainers returns all containers for a domain or a error.
+// GetContainers returns all containers for a domain suffix or a error.
 func GetContainers(domain string) ([]types.Container, error) {
-
 	client, err := getDockerClient()
 	ctx := context.Background()
 
