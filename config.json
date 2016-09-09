@@ -4,5 +4,9 @@
         "host": "unix:///var/run/docker.sock",
         "version": "v1.22"
     },
+    "database": {
+        "prefix": "ab_",
+        "md5": true
+    },
     "listen": ":8080"
 }
