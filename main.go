@@ -27,10 +27,6 @@ func main() {
 		c.Listen = "0.0.0.0" + c.Listen
 	}
 
-	// Setup required docker host and version information.
-	docker.SetHost(c.Docker.Host)
-	docker.SetVersion(c.Docker.Version)
-
 	// Index route.
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		containers, err := docker.GetContainers(c.Domain)
