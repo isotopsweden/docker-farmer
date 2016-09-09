@@ -33,19 +33,19 @@ func DeleteDatabase(user, password, prefix, name, container string) (bool, error
 	// Create domain based on prefix and md5.
 	dbname := fmt.Sprintf("%s%s", prefix, fmt.Sprintf("%x", md5.Sum([]byte(name))))
 
-	// Create mysql command.
-	cmd := fmt.Sprintf("mysql -u%s -p%s -e\"drop database %s\"", user, password, dbname)
-
-	log.Println(fmt.Sprintf("Trying to run: %s on container %s with name %s", cmd, container, name))
+	log.Println(fmt.Sprintf("Trying to run drop database on %s", name))
 
 	// Exec create on container.
 	res, err := client.ContainerExecCreate(ctx, container, types.ExecConfig{
-		AttachStdin:  false,
+		AttachStdin:  true,
 		AttachStdout: true,
 		AttachStderr: true,
-		Tty:          false,
+		Tty:          true,
 		Cmd: []string{
-			cmd,
+			"mysql",
+			fmt.Sprintf("-u%s", user),
+			fmt.Sprintf("-p%s", password),
+			fmt.Sprintf("-edrop database %s;", dbname),
 		},
 	})
 
@@ -56,11 +56,19 @@ func DeleteDatabase(user, password, prefix, name, container string) (bool, error
 	}
 
 	// Exec start on container.
-	err = client.ContainerExecStart(ctx, res.ID, types.ExecStartCheck{})
+	err = client.ContainerExecStart(ctx, res.ID, types.ExecStartCheck{
+		Detach: false,
+	})
 
 	if err != nil {
 		return false, err
 	}
 
-	return true, nil
+	inspect, err := client.ContainerExecInspect(ctx, res.ID)
+
+	if err != nil {
+		return false, err
+	}
+
+	return inspect.ExitCode == 0, nil
 }

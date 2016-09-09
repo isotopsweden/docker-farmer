@@ -70,6 +70,33 @@ func main() {
 		}
 	})
 
+	// Database route.
+	http.HandleFunc("/database", func(w http.ResponseWriter, r *http.Request) {
+		name := r.URL.Query().Get("name")
+
+		if name == "" {
+			fmt.Fprintf(w, "No name query string")
+			return
+		}
+
+		conf := config.Get()
+		ok, err := docker.DeleteDatabase(conf.Database.User, conf.Database.Password, conf.Database.Prefix, name, conf.Database.Container)
+
+		if err != nil {
+			fmt.Fprintf(w, err.Error())
+		} else {
+			j, err := json.Marshal(map[string]bool{
+				"success": ok,
+			})
+
+			if err != nil {
+				fmt.Fprintf(w, err.Error())
+			} else {
+				fmt.Fprintf(w, string(j))
+			}
+		}
+	})
+
 	// BitBucket service route.
 	http.HandleFunc("/services/bitbucket", handlers.BitbucketHandler)
 

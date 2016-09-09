@@ -6,7 +6,7 @@
     },
     "database": {
         "prefix": "ab_",
-        "md5": true
+        "container": "name or id"
     },
     "listen": ":8080"
 }
