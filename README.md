@@ -6,7 +6,7 @@ Simple Go project that will handle payloads from different services and remove D
 
 Example configuration:
 
-```
+```js
 {
     "domain": "test.example.com",
     "docker": {
