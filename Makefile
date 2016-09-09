@@ -1,7 +1,7 @@
 build:
-        go build -o farmer main.go
+	go build -o farmer main.go
 
 deps:
-        go get ./...
+	go get ./...
 
 .PHONY: build deps
