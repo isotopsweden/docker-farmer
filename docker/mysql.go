@@ -4,8 +4,6 @@ import (
 	"crypto/md5"
 	"fmt"
 	"log"
-	"strings"
-	"unicode"
 
 	"github.com/docker/docker/api/types"
 	"golang.org/x/net/context"
@@ -29,13 +27,8 @@ func DeleteDatabase(user, password, prefix, name, container string) (bool, error
 		password = "root"
 	}
 
-	// Trim whitespace in container name.
-	name = strings.Map(func(r rune) rune {
-		if unicode.IsSpace(r) {
-			return -1
-		}
-		return r
-	}, name)
+	// Remove trailing slash from name.
+	name = name[1:]
 
 	// Create domain based on prefix and md5.
 	dbname := fmt.Sprintf("%s%s", prefix, fmt.Sprintf("%x", md5.Sum([]byte(name))))
