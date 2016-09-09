@@ -5,8 +5,8 @@ import (
 
 	"context"
 
-	"github.com/docker/engine-api/client"
-	"github.com/docker/engine-api/types"
+	"github.com/docker/docker/api/types"
+	"github.com/docker/docker/client"
 )
 
 var (
