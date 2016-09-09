@@ -29,7 +29,7 @@ func BitbucketHandler(w http.ResponseWriter, r *http.Request) {
 
 	var p bitbucketPayload
 	if err := decoder.Decode(&p); err != nil {
-		fmt.Fprintf(w, err.Error())
+		write(w, fmt.Sprintf("Bitbucket: %s", err.Error()))
 		return
 	}
 
@@ -38,7 +38,7 @@ func BitbucketHandler(w http.ResponseWriter, r *http.Request) {
 
 	// Check pull request state.
 	if strings.ToLower(p.PullRequest.State) != "merged" {
-		fmt.Fprintf(w, "Only pull requested with state `merged` can be handle.")
+		write(w, "Bitbucket: Only pull requested with state `merged` can be handle.")
 		return
 	}
 
@@ -46,9 +46,9 @@ func BitbucketHandler(w http.ResponseWriter, r *http.Request) {
 	suffix := fmt.Sprintf("%s.%s", strings.ToLower(p.PullRequest.Source.Branch.Name), domain)
 	count, err := docker.RemoveContainers(suffix)
 	if err != nil {
-		fmt.Fprintf(w, err.Error())
+		write(w, fmt.Sprintf("Bitbucket: %s", err.Error()))
 		return
 	}
 
-	fmt.Fprintf(w, "Removed %d containers with name suffix %s", count, suffix)
+	write(w, fmt.Sprintf("Bitbucket: Removed %d containers with name suffix %s", count, suffix))
 }

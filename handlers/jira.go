@@ -22,7 +22,7 @@ func JiraHandler(w http.ResponseWriter, r *http.Request) {
 
 	var p jiraPayload
 	if err := decoder.Decode(&p); err != nil {
-		fmt.Fprintf(w, err.Error())
+		write(w, fmt.Sprintf("Jira: %s", err.Error()))
 		return
 	}
 
@@ -33,9 +33,9 @@ func JiraHandler(w http.ResponseWriter, r *http.Request) {
 	suffix := fmt.Sprintf("%s.%s", strings.ToLower(p.Key), domain)
 	count, err := docker.RemoveContainers(suffix)
 	if err != nil {
-		fmt.Fprintf(w, err.Error())
+		write(w, fmt.Sprintf("Jira: %s", err.Error()))
 		return
 	}
 
-	fmt.Fprintf(w, "Removed %d containers with name suffix %s", count, suffix)
+	write(w, fmt.Sprintf("Jira: Removed %d containers with name suffix %s", count, suffix))
 }

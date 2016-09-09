@@ -27,7 +27,7 @@ func GithubHandler(w http.ResponseWriter, r *http.Request) {
 
 	var p githubPayload
 	if err := decoder.Decode(&p); err != nil {
-		fmt.Fprintf(w, err.Error())
+		write(w, fmt.Sprintf("GitHub: %s", err.Error()))
 		return
 	}
 
@@ -36,7 +36,7 @@ func GithubHandler(w http.ResponseWriter, r *http.Request) {
 
 	// Check if the pull request is merged.
 	if !p.PullRequest.Merged {
-		fmt.Fprintf(w, "Only merged pull requests can be handle.")
+		write(w, "GitHub: Only merged pull requests can be handle.")
 		return
 	}
 
@@ -44,9 +44,9 @@ func GithubHandler(w http.ResponseWriter, r *http.Request) {
 	suffix := fmt.Sprintf("%s.%s", strings.ToLower(p.PullRequest.Head.Ref), domain)
 	count, err := docker.RemoveContainers(suffix)
 	if err != nil {
-		fmt.Fprintf(w, err.Error())
+		write(w, fmt.Sprintf("Bitbucket: %s", err.Error()))
 		return
 	}
 
-	fmt.Fprintf(w, "Removed %d containers with name suffix %s", count, suffix)
+	write(w, fmt.Sprintf("GitHub: Removed %d containers with name suffix %s", count, suffix))
 }

@@ -25,7 +25,7 @@ func GitlabHandler(w http.ResponseWriter, r *http.Request) {
 
 	var p gitlabPayload
 	if err := decoder.Decode(&p); err != nil {
-		fmt.Fprintf(w, err.Error())
+		write(w, fmt.Sprintf("GitLab: %s", err.Error()))
 		return
 	}
 
@@ -34,7 +34,7 @@ func GitlabHandler(w http.ResponseWriter, r *http.Request) {
 
 	// Check merge request state.
 	if strings.ToLower(p.ObjectAttributes.State) != "merged" {
-		fmt.Fprintf(w, "Only merge requested with state `merged` can be handle.")
+		write(w, "GitLab: Only merge requested with state `merged` can be handle.")
 		return
 	}
 
@@ -42,9 +42,9 @@ func GitlabHandler(w http.ResponseWriter, r *http.Request) {
 	suffix := fmt.Sprintf("%s.%s", strings.ToLower(p.ObjectAttributes.SourceBranch), domain)
 	count, err := docker.RemoveContainers(suffix)
 	if err != nil {
-		fmt.Fprintf(w, err.Error())
+		write(w, fmt.Sprintf("GitLab: %s", err.Error()))
 		return
 	}
 
-	fmt.Fprintf(w, "Removed %d containers with name suffix %s", count, suffix)
+	write(w, fmt.Sprintf("GitLab: Removed %d containers with name suffix %s", count, suffix))
 }
