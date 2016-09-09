@@ -1,17 +1,14 @@
 package docker
 
 import (
+	"log"
 	"strings"
 
 	"context"
 
 	"github.com/docker/docker/api/types"
 	"github.com/docker/docker/client"
-)
-
-var (
-	host    string
-	version string
+	"github.com/isotopsweden/docker-farmer/config"
 )
 
 // getDockerClient will return the Docker client or error.
@@ -28,16 +25,16 @@ func getDockerClient() (*client.Client, error) {
 
 // GetHost returns Docker host.
 func GetHost() string {
-	if host == "" {
-		host = "unix:///var/run/docker.sock"
+	if config.Get().Docker.Host == "" {
+		return "unix:///var/run/docker.sock"
 	}
 
-	return host
+	return config.Get().Docker.Host
 }
 
 // GetVersion returns Docker version.
 func GetVersion() string {
-	return version
+	return config.Get().Docker.Version
 }
 
 // GetContainers returns all containers for a domain suffix or a error.
@@ -91,27 +88,26 @@ func RemoveContainers(domain string) (int, error) {
 	}
 
 	count := 0
+	conf := config.Get()
+
 	for _, c := range containers {
 		// Try to force remove the container.
 		if err := client.ContainerRemove(ctx, c.ID, types.ContainerRemoveOptions{
 			RemoveVolumes: true,
 			Force:         true,
 		}); err != nil {
-			return 0, err
+			log.Println("Docker error: ", err.Error())
+			continue
+		}
+
+		// Try to delete database
+		_, err := DeleteDatabase(conf.Database.User, conf.Database.Password, conf.Database.Prefix, conf.Domain, conf.Database.Container)
+		if err != nil {
+			log.Println("Database error: ", err.Error())
 		}
 
 		count++
 	}
 
 	return count, nil
-}
-
-// SetHost sets Docker host.
-func SetHost(h string) {
-	host = h
-}
-
-// SetVersion sets Docker version.
-func SetVersion(v string) {
-	version = v
 }

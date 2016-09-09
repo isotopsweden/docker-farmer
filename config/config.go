@@ -35,8 +35,9 @@ func Init(s string) {
 type Config struct {
 	Database struct {
 		Container string
+		Password  string
 		Prefix    string
-		MD5       bool
+		User      string
 	}
 	Domain string
 	Docker struct {
