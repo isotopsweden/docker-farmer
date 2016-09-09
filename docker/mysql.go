@@ -27,7 +27,7 @@ func DeleteDatabase(user, password, prefix, domain, container string) (bool, err
 		password = "root"
 	}
 
-	dbname := fmt.Sprintf("%s%s", prefix, md5.Sum([]byte(domain)))
+	dbname := fmt.Sprintf("%s%s", prefix, fmt.Sprintf("%x", md5.Sum([]byte(domain))))
 	cmd := fmt.Sprintf("mysql -u%s -p%s -e\"drop database %s\"", user, password, dbname)
 
 	log.Println(fmt.Sprintf("Trying to run: %s on container %s", cmd, container))

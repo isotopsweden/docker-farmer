@@ -42,8 +42,11 @@ func BitbucketHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// Split branch on `/`.
+	branch := strings.Split(strings.ToLower(p.PullRequest.Source.Branch.Name), "/")
+
 	// Remove containers for the suffix.
-	suffix := fmt.Sprintf("%s.%s", strings.ToLower(p.PullRequest.Source.Branch.Name), domain)
+	suffix := fmt.Sprintf("%s.%s", branch[len(branch)-1], domain)
 	count, err := docker.RemoveContainers(suffix)
 	if err != nil {
 		write(w, fmt.Sprintf("Bitbucket: %s", err.Error()))
