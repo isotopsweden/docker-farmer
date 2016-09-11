@@ -80,7 +80,7 @@ func main() {
 		}
 
 		conf := config.Get()
-		ok, err := docker.DeleteDatabase(conf.Database.User, conf.Database.Password, conf.Database.Prefix, name, conf.Database.Container)
+		ok, err := docker.DeleteMySQLDatabase(conf.Database.User, conf.Database.Password, conf.Database.Prefix, name, conf.Database.Container)
 
 		if err != nil {
 			fmt.Fprintf(w, err.Error())

@@ -37,6 +37,7 @@ type Config struct {
 		Container string
 		Password  string
 		Prefix    string
+		Type      string
 		User      string
 	}
 	Domain string

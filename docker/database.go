@@ -10,9 +10,9 @@ import (
 	"github.com/docker/docker/api/types"
 )
 
-// DeleteDatabase will try to delete a database based on prefix and domain,
+// DeleteMySQLDatabase will try to delete a database based on prefix and domain,
 // the domain will be converted to a md5 hash.
-func DeleteDatabase(user, password, prefix, name, container string) (bool, error) {
+func DeleteMySQLDatabase(user, password, prefix, name, container string) (bool, error) {
 	client, err := getDockerClient()
 	ctx := context.Background()
 
