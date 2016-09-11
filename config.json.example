@@ -9,7 +9,7 @@
         "container": "name or id",
         "type": "mysql"
     },
-    "listen": ":8080",
+    "listen": ":80",
     "sites": {
         "exclude": ["redis"]
     }

@@ -12,5 +12,5 @@ RUN go install github.com/isotopsweden/docker-farmer
 # Run the docker farmer command when the container starts.
 ENTRYPOINT /go/bin/docker-farmer --config=/go/src/github.com/isotopsweden/docker-farmer/config.json
 
-# http server listens on port 8080.
-EXPOSE 8080
+# http server listens on port 80.
+EXPOSE 80
