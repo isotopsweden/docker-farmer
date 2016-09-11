@@ -29,6 +29,13 @@ Example configuration:
 
 Only merged pull request will be handled. In JIRA you can set a scope for your webhook.
 
+## Run in Docker
+
+```
+docker build -t farmer .
+docker run -i -t -d -e VIRTUAL_HOST=test.example --net test -v /var/run/docker.sock:/var/run/docker.sock:ro farmer
+```
+
 ## License
 
 MIT © Isotop
