@@ -41,6 +41,7 @@ func main() {
 	// Index route.
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		containers, err := docker.GetContainers(c.Domain)
+		all := r.URL.Query().Get("all")
 
 		if err != nil {
 			fmt.Fprintf(w, err.Error())
@@ -51,7 +52,7 @@ func main() {
 			for _, c := range containers {
 				name := c.Names[0][1:]
 
-				if stringInSlice(c.Image, exclude) {
+				if all != "true" && stringInSlice(c.Image, exclude) {
 					continue
 				}
 
