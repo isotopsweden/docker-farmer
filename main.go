@@ -46,11 +46,12 @@ func main() {
 			fmt.Fprintf(w, err.Error())
 		} else {
 			sites := []string{}
+			exclude := config.Get().Sites.Exclude
 
 			for _, c := range containers {
 				name := c.Names[0][1:]
 
-				if stringInSlice(c.Image, config.Get().Sites.Exclude) {
+				if stringInSlice(c.Image, exclude) {
 					continue
 				}
 
