@@ -1,6 +1,6 @@
 # docker-farmer
 
-Simple Go project that will handle payloads from different services and remove Docker containers based on the payload and the configured domain.
+Custom build tool to remove docker containers and databases from services.
 
 ## Config
 
