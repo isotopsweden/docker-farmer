@@ -46,6 +46,9 @@ type Config struct {
 		Version string
 	}
 	Listen string
+	Sites  struct {
+		Exclude []string
+	}
 }
 
 // Get will return the config struct.

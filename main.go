@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"strings"
 
 	"github.com/isotopsweden/docker-farmer/config"
 	"github.com/isotopsweden/docker-farmer/docker"
@@ -15,6 +16,16 @@ import (
 var (
 	configFlag = flag.String("config", "", "Path to config file")
 )
+
+// stringInSlice returns true if a string exists or false if not.
+func stringInSlice(a string, list []string) bool {
+	for _, b := range list {
+		if strings.ToLower(b) == strings.ToLower(a) {
+			return true
+		}
+	}
+	return false
+}
 
 func main() {
 	flag.Parse()
@@ -38,6 +49,11 @@ func main() {
 
 			for _, c := range containers {
 				name := c.Names[0][1:]
+
+				if stringInSlice(c.Image, config.Get().Sites.Exclude) {
+					continue
+				}
+
 				sites = append(sites, name)
 			}
 
