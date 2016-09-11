@@ -5,8 +5,9 @@ import (
 	"fmt"
 	"log"
 
+	"context"
+
 	"github.com/docker/docker/api/types"
-	"golang.org/x/net/context"
 )
 
 // DeleteDatabase will try to delete a database based on prefix and domain,
