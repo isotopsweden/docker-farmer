@@ -8,6 +8,7 @@ import (
 	"net/http"
 	"strings"
 
+	"github.com/docker/docker/api/types"
 	"github.com/isotopsweden/docker-farmer/config"
 	"github.com/isotopsweden/docker-farmer/docker"
 	"github.com/isotopsweden/docker-farmer/handlers"
@@ -95,14 +96,17 @@ func main() {
 			fmt.Fprintf(w, err.Error())
 		} else {
 			exclude := config.Get().Sites.Exclude
+			list := []types.Container{}
 
-			for i, c := range containers {
+			for _, c := range containers {
 				if all != "true" && stringInSlice(c.Image, exclude) {
-					containers = append(containers[:i], containers[i+1:]...)
+					continue
 				}
+
+				list = append(list, c)
 			}
 
-			j, err := json.Marshal(containers)
+			j, err := json.Marshal(list)
 
 			if err != nil {
 				fmt.Fprintf(w, err.Error())
