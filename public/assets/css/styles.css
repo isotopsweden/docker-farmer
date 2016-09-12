@@ -1,0 +1,69 @@
+body {
+  background: #fff;
+  color: #3a3a3a;
+  font-family: "Lato", sans-serif;
+  font-size: 18px;
+  line-height: 1.7;
+}
+
+a {
+    color: #3371e3;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+header {
+    background: #3371e3;
+    padding: 5px 10px;
+}
+
+header h1 {
+    color: white;
+    font-size: 20px;
+}
+
+.container {
+    margin: 0 auto;
+    width: 1200px;
+    max-width: 100%;
+}
+
+.sites {
+    padding: 10px;
+}
+
+.sites h2 {
+    border-bottom: 1px #eaeaea solid;
+    font-size: 18px;
+}
+
+.sites table {
+  border-collapse: collapse;
+  border-spacing: 0;
+  overflow-x: auto;
+  max-width: 100%;
+  vertical-align: top;
+  white-space: nowrap;
+  width: 100%;
+}
+
+@media only screen and (max-width : 736px) {
+    .sites table {
+        display: inline-block;
+    }
+}
+
+.sites table th {
+  font-size: 11px;
+  text-align: left;
+  text-transform: uppercase;
+}
+
+.sites table th,
+.sites table td {
+  border: 1px solid #d9d7ce;
+  padding: 6px 12px;
+}

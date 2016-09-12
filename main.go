@@ -39,7 +39,21 @@ func main() {
 	}
 
 	// Index route.
-	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+	http.Handle("/", http.FileServer(http.Dir("public")))
+
+	// Config route.
+	http.HandleFunc("/config", func(w http.ResponseWriter, r *http.Request) {
+		j, err := json.Marshal(config.Get())
+
+		if err != nil {
+			fmt.Fprintf(w, err.Error())
+		} else {
+			fmt.Fprintf(w, string(j))
+		}
+	})
+
+	// Sites route.
+	http.HandleFunc("/sites", func(w http.ResponseWriter, r *http.Request) {
 		containers, err := docker.GetContainers(c.Domain)
 		all := r.URL.Query().Get("all")
 
@@ -74,10 +88,19 @@ func main() {
 	// Containers route.
 	http.HandleFunc("/containers", func(w http.ResponseWriter, r *http.Request) {
 		containers, err := docker.GetContainers(c.Domain)
+		all := r.URL.Query().Get("all")
 
 		if err != nil {
 			fmt.Fprintf(w, err.Error())
 		} else {
+			exclude := config.Get().Sites.Exclude
+
+			for i, c := range containers {
+				if all != "true" && stringInSlice(c.Image, exclude) {
+					containers = append(containers[:i], containers[i+1:]...)
+				}
+			}
+
 			j, err := json.Marshal(containers)
 
 			if err != nil {
