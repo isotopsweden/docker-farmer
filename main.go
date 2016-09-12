@@ -73,14 +73,29 @@ func main() {
 	// Database route.
 	http.HandleFunc("/database", func(w http.ResponseWriter, r *http.Request) {
 		name := r.URL.Query().Get("name")
+		typ := r.URL.Query().Get("type")
 
 		if name == "" {
 			fmt.Fprintf(w, "No name query string")
 			return
 		}
 
+		if typ == "" {
+			typ = "mysql"
+		}
+
 		conf := config.Get()
-		ok, err := docker.DeleteDatabase(conf.Database.User, conf.Database.Password, conf.Database.Prefix, name, conf.Database.Container)
+
+		ok := false
+		var err error
+
+		switch typ {
+		case "mysql":
+			ok, err = docker.DeleteDatabase(conf.Database.User, conf.Database.Password, conf.Database.Prefix, name, conf.Database.Container)
+			break
+		default:
+			break
+		}
 
 		if err != nil {
 			fmt.Fprintf(w, err.Error())
