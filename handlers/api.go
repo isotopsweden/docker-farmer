@@ -24,12 +24,47 @@ func ConfigHandler(w http.ResponseWriter, r *http.Request) {
 // ContainersHandler will handle the containers api route.
 func ContainersHandler(w http.ResponseWriter, r *http.Request) {
 	c := config.Get()
-	containers, err := docker.GetContainers(c.Domain)
-	all := r.URL.Query().Get("all")
 
-	if err != nil {
-		fmt.Fprintf(w, err.Error())
-	} else {
+	all := r.URL.Query().Get("all")
+	action := r.URL.Query().Get("action")
+	domain := r.URL.Query().Get("domain")
+
+	if domain == "" {
+		domain = c.Domain
+	}
+
+	var err error
+	var data interface{}
+
+	switch action {
+	case "delete":
+		count, err := docker.RemoveContainers(domain)
+
+		if err != nil {
+			break
+		}
+
+		data = map[string]interface{}{
+			"count":   count,
+			"success": err == nil,
+		}
+
+		break
+	default:
+		if action == "restart" {
+			_, err := docker.RestartContainers(domain)
+
+			if err != nil {
+				break
+			}
+		}
+
+		containers, err := docker.GetContainers(domain)
+
+		if err != nil {
+			break
+		}
+
 		exclude := config.Get().Sites.Exclude
 		list := []types.Container{}
 
@@ -41,13 +76,17 @@ func ContainersHandler(w http.ResponseWriter, r *http.Request) {
 			list = append(list, c)
 		}
 
-		j, err := json.Marshal(list)
+		data = list
 
-		if err != nil {
-			fmt.Fprintf(w, err.Error())
-		} else {
-			fmt.Fprintf(w, string(j))
-		}
+		break
+	}
+
+	j, err := json.Marshal(data)
+
+	if err != nil {
+		fmt.Fprintf(w, err.Error())
+	} else {
+		fmt.Fprintf(w, string(j))
 	}
 }
 

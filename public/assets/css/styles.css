@@ -67,3 +67,10 @@ header h1 {
   border: 1px solid #d9d7ce;
   padding: 6px 12px;
 }
+
+.loader {
+    background: url(/assets/images/loader.gif) no-repeat center;
+    float: right;
+    height: 16px;
+    width: 16px;
+}

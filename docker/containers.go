@@ -96,7 +96,7 @@ func RemoveContainers(domain string) (int, error) {
 			RemoveVolumes: true,
 			Force:         true,
 		}); err != nil {
-			log.Println("Docker error: ", err.Error())
+			log.Println("Docker remove error: ", err.Error())
 			continue
 		}
 
@@ -106,12 +106,42 @@ func RemoveContainers(domain string) (int, error) {
 			_, err := DeleteMySQLDatabase(conf.Database.User, conf.Database.Password, conf.Database.Prefix, c.Names[0], conf.Database.Container)
 
 			if err != nil {
-				log.Println("Database error: ", err.Error())
+				log.Println("Database delete error: ", err.Error())
 			}
 
 			break
 		default:
 			break
+		}
+
+		count++
+	}
+
+	return count, nil
+}
+
+// RestartContainers will restart all containers that match the given domain.
+func RestartContainers(domain string) (int, error) {
+	client, err := getDockerClient()
+	ctx := context.Background()
+
+	if err != nil {
+		return 0, err
+	}
+
+	containers, err := GetContainers(domain)
+
+	if err != nil {
+		return 0, err
+	}
+
+	count := 0
+
+	for _, c := range containers {
+		// Try to force remove the container.
+		if err := client.ContainerRestart(ctx, c.ID, nil); err != nil {
+			log.Println("Docker restart error: ", err.Error())
+			continue
 		}
 
 		count++
