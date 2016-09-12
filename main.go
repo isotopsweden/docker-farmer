@@ -15,6 +15,7 @@ import (
 
 var (
 	configFlag = flag.String("config", "", "Path to config file")
+	publicFlag = flag.String("public", "public", "Path to public directory")
 )
 
 // stringInSlice returns true if a string exists or false if not.
@@ -39,7 +40,7 @@ func main() {
 	}
 
 	// Index route.
-	http.Handle("/", http.FileServer(http.Dir("public")))
+	http.Handle("/", http.FileServer(http.Dir(*publicFlag)))
 
 	// Config route.
 	http.HandleFunc("/config", func(w http.ResponseWriter, r *http.Request) {
