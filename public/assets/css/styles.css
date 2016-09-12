@@ -68,6 +68,33 @@ header h1 {
   padding: 6px 12px;
 }
 
+.container-actions a {
+	border-radius: 5px;
+	display: inline-block;
+	cursor: pointer;
+	color: #ffffff;
+	font-size: 12px;
+	padding: 3px 7px;
+	text-decoration: none;
+    margin-bottom: 5px;
+}
+
+.container-actions .delete {
+	background-color: #f55454;
+}
+
+.container-actions .delete:hover {
+    background-color: #E02E2E;
+}
+
+.container-actions .restart {
+    background-color: #6580BD;
+}
+
+.container-actions .restart:hover {
+    background-color: #4461A4;
+}
+
 .loader {
     background: url(/assets/images/loader.gif) no-repeat center;
     float: right;
