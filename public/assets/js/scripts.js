@@ -45,7 +45,7 @@ $(function () {
                     html.push('<td class="container-' + key.toLowerCase() + '">' + container[key] + '</td>');
                 }
 
-                html.push('<td class="container-actions"><a href="#" class="delete">delete</a> <a href="#" class="restart">restart</a></td>');
+                html.push('<td class="container-actions"><a href="#" class="restart">restart</a><a href="#" class="delete">delete</a></td>');
                 html.push('</tr>');
 
                 $sites.append(html.join(''))

@@ -74,9 +74,9 @@ header h1 {
 	cursor: pointer;
 	color: #ffffff;
 	font-size: 12px;
+    margin: 0 5px 5px 0;
 	padding: 3px 7px;
 	text-decoration: none;
-    margin-bottom: 5px;
 }
 
 .container-actions .delete {
