@@ -6,16 +6,18 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"os"
 	"strings"
 
 	"github.com/docker/docker/api/types"
 	"github.com/isotopsweden/docker-farmer/config"
 	"github.com/isotopsweden/docker-farmer/docker"
 	"github.com/isotopsweden/docker-farmer/handlers"
+	"github.com/kardianos/osext"
 )
 
 var (
-	configFlag = flag.String("config", "", "Path to config file")
+	configFlag = flag.String("config", "config.json", "Path to config file")
 	publicFlag = flag.String("public", "public", "Path to public directory")
 )
 
@@ -29,11 +31,27 @@ func stringInSlice(a string, list []string) bool {
 	return false
 }
 
+// path will return right path for file, looks at the
+// given file first and then looks in the executable folder.
+func path(file string) string {
+	if _, err := os.Stat(file); err == nil {
+		return file
+	}
+
+	path, _ := osext.ExecutableFolder()
+
+	if _, err := os.Stat(path + "/" + file); os.IsNotExist(err) {
+		return file
+	}
+
+	return path + "/" + file
+}
+
 func main() {
 	flag.Parse()
 
 	// Init config.
-	config.Init(*configFlag)
+	config.Init(path(*configFlag))
 	c := config.Get()
 
 	if c.Listen[0] == ':' {
@@ -41,7 +59,7 @@ func main() {
 	}
 
 	// Index route.
-	http.Handle("/", http.FileServer(http.Dir(*publicFlag)))
+	http.Handle("/", http.FileServer(http.Dir(path(*publicFlag))))
 
 	// Config route.
 	http.HandleFunc("/config", func(w http.ResponseWriter, r *http.Request) {
