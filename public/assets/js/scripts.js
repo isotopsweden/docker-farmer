@@ -1,11 +1,11 @@
 $(function () {
     // Fetch configuration.
-    $.getJSON('/config', function (res) {
+    $.getJSON('/api/config', function (res) {
         $('.domain').html('<a href="' + res.Domain + '">' + res.Domain + '</a>');
     });
 
     // Fetch all containers.
-    $.getJSON('/containers', function (res) {
+    $.getJSON('/api/containers', function (res) {
         for (var i = 0, l = res.length; i < l; i++) {
             var container = res[i];
             var url = container.Names[0].substr(1);
