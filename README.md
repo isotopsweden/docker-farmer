@@ -1,6 +1,6 @@
 # docker-farmer
 
-Simple Go project that will handle payloads from different services and remove Docker containers based on the payload and the configured domain.
+Custom tool to remove docker containers and databases from services.
 
 ## Config
 
@@ -28,6 +28,13 @@ Example configuration:
 - JIRA (should be a webhook when a issue is updated)
 
 Only merged pull request will be handled. In JIRA you can set a scope for your webhook.
+
+## Run in Docker
+
+```
+docker build -t farmer .
+docker run -i -t -d -e VIRTUAL_HOST=test.example.com -v /var/run/docker.sock:/var/run/docker.sock:ro farmer
+```
 
 ## License
 

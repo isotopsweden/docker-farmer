@@ -101,9 +101,17 @@ func RemoveContainers(domain string) (int, error) {
 		}
 
 		// Try to delete database
-		_, err := DeleteDatabase(conf.Database.User, conf.Database.Password, conf.Database.Prefix, c.Names[0], conf.Database.Container)
-		if err != nil {
-			log.Println("Database error: ", err.Error())
+		switch conf.Database.Type {
+		case "mysql":
+			_, err := DeleteMySQLDatabase(conf.Database.User, conf.Database.Password, conf.Database.Prefix, c.Names[0], conf.Database.Container)
+
+			if err != nil {
+				log.Println("Database error: ", err.Error())
+			}
+
+			break
+		default:
+			break
 		}
 
 		count++
