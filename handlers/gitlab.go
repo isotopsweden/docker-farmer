@@ -33,8 +33,11 @@ func GitlabHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Get the domain.
-	domain := config.Get().Domain
+	// Bail if not right webhook object kind.
+	if p.ObjectKind != "push" && p.ObjectKind != "merge_request" {
+		write(w, "GitLab: Only `merge_request` and `push` webhooks works.")
+		return
+	}
 
 	var branch []string
 
@@ -64,6 +67,9 @@ func GitlabHandler(w http.ResponseWriter, r *http.Request) {
 		write(w, "GitLab: branch is empty, stopping.")
 		return
 	}
+
+	// Get the domain.
+	domain := config.Get().Domain
 
 	// Remove containers for the suffix.
 	suffix := fmt.Sprintf("%s.%s", branch[len(branch)-1], domain)
