@@ -29,6 +29,21 @@ Example configuration:
 
 Only merged pull request will be handled. In JIRA you can set a scope for your webhook.
 
+## Database
+
+The database name should be a md5 hash of the domain for the container with the database prefix.
+
+```
+md5 <<<"abc-123.test.example.com"
+5d4f0978db52bd0e588bef9cef98715f
+```
+
+Gives us
+
+```
+ab_5d4f0978db52bd0e588bef9cef98715f
+```
+
 ## Run in Docker
 
 ```
