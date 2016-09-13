@@ -5,7 +5,7 @@ $(function () {
      *
      * @param {array} containers
      */
-    function appendContainers(containers) {
+    function appendContainers(containers, all) {
         var $sites = $('.sites table tbody');
         var keys = ['Id', 'Image', 'State', 'Status'];
         var keep = [];
@@ -57,7 +57,7 @@ $(function () {
             }
         }
 
-        if (keep.length > 1) {
+        if (keep.length > 1 || !all) {
             $sites.find('tr').each(function () {
                 var $this = $(this);
 
@@ -77,8 +77,12 @@ $(function () {
      */
     function updateContainers(all) {
         all = typeof all === 'undefined' ? false : all;
+
         $('.loader').show();
-        $.getJSON('/api/containers?all=' + all, appendContainers);
+
+        $.getJSON('/api/containers?all=' + all, function(res) {
+            appendContainers(res, all);
+        });
     }
     updateContainers();
     setInterval(updateContainers, 300000);
