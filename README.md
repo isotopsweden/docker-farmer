@@ -1,6 +1,6 @@
 # docker-farmer
 
-Custom tool to remove docker containers and databases from services.
+Custom tool to remove docker containers and databases from services based on domain names.
 
 ## Config
 
