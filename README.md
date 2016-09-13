@@ -13,7 +13,15 @@ Example configuration:
         "host": "unix:///var/run/docker.sock",
         "version": "v1.22"
     },
-    "listen": ":8080"
+    "database": {
+        "prefix": "ab_",
+        "container": "name or id",
+        "type": "mysql"
+    },
+    "listen": ":80",
+    "containers": {
+        "exclude": ["redis"]
+    }
 }
 ```
 
