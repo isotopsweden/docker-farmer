@@ -68,6 +68,9 @@ func main() {
 	// Jira service route.
 	http.HandleFunc("/services/jira", handlers.JiraHandler)
 
+	// Test service route.
+	http.HandleFunc("/services/test", handlers.TestHandler)
+
 	fmt.Printf("Listening to http://%s\n", c.Listen)
 
 	// Listen to port.
