@@ -10,7 +10,7 @@
         "type": "mysql"
     },
     "listen": ":80",
-    "sites": {
+    "containers": {
         "exclude": ["redis"]
     }
 }

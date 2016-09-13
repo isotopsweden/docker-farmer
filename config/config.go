@@ -45,8 +45,8 @@ type Config struct {
 		Host    string
 		Version string
 	}
-	Listen string
-	Sites  struct {
+	Listen     string
+	Containers struct {
 		Exclude []string
 	}
 }

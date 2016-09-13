@@ -65,7 +65,7 @@ func ContainersHandler(w http.ResponseWriter, r *http.Request) {
 			break
 		}
 
-		exclude := config.Get().Sites.Exclude
+		exclude := config.Get().Containers.Exclude
 		list := []types.Container{}
 
 		for _, c := range containers {
