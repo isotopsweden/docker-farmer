@@ -57,13 +57,15 @@ $(function () {
             }
         }
 
-        $sites.find('tr').each(function () {
-            var $this = $(this);
+        if (keep.length > 1) {
+            $sites.find('tr').each(function () {
+                var $this = $(this);
 
-            if (keep.indexOf($this.data('container-id')) === -1) {
-                $this.remove();
-            }
-        });
+                if (keep.indexOf($this.data('container-id')) === -1) {
+                    $this.remove();
+                }
+            });
+        }
 
         $('.loader').hide();
     }

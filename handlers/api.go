@@ -69,7 +69,9 @@ func ContainersHandler(w http.ResponseWriter, r *http.Request) {
 		list := []types.Container{}
 
 		for _, c := range containers {
-			if all != "true" && stringInSlice(c.Image, exclude) {
+			name := c.Names[0][1:]
+
+			if all != "true" && name != domain && stringInSlice(c.Image, exclude) {
 				continue
 			}
 
