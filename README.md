@@ -32,10 +32,8 @@ Example configuration:
 
 - Bitbucket (should be pull request webhook)
 - GitHub (should be a pull request webhook)
-- GitLab (should be a merge request webhook)
+- GitLab (should be a merge request webhook or push events webhook)
 - JIRA (should be a webhook when a issue is updated)
-
-Only merged pull request will be handled. In JIRA you can set a scope for your webhook.
 
 ## Database
 
