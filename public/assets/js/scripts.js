@@ -70,6 +70,8 @@ $(function () {
 
     /**
      * Update containers.
+     *
+     * @param {bool} all
      */
     function updateContainers(all) {
         all = typeof all === 'undefined' ? false : all;
