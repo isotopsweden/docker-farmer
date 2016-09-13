@@ -25,6 +25,14 @@ header h1 {
     font-size: 20px;
 }
 
+.left {
+    float: left;
+}
+
+.right {
+    float: right;
+}
+
 .container {
     margin: 0 auto;
     width: 1200px;

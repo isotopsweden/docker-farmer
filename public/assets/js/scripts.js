@@ -8,6 +8,7 @@ $(function () {
     function appendContainers(containers) {
         var $sites = $('.sites table tbody');
         var keys = ['Id', 'Image', 'State', 'Status'];
+        var keep = [];
 
         for (var i = 0, l = containers.length; i < l; i++) {
             var container = containers[i];
@@ -16,6 +17,8 @@ $(function () {
             var $tr = $sites.find('tr[data-container-id="' + container.Id + '"]');
 
             if ($tr.size()) {
+                keep.push(container.Id);
+
                 for (var key in container) {
                     if (keys.indexOf(key) === -1) {
                         continue;
@@ -32,6 +35,8 @@ $(function () {
                     '<tr data-container-id="' + container.Id + '">',
                         '<td class="container-url"><a href="//' + url + '" target="_blank">' + url + '</a></td>'
                 ];
+
+                keep.push(container.Id);
 
                 for (var key in container) {
                     if (keys.indexOf(key) === -1) {
@@ -52,15 +57,24 @@ $(function () {
             }
         }
 
+        $sites.find('tr').each(function () {
+            var $this = $(this);
+
+            if (keep.indexOf($this.data('container-id')) === -1) {
+                $this.remove();
+            }
+        });
+
         $('.loader').hide();
     }
 
     /**
      * Update containers.
      */
-    function updateContainers() {
+    function updateContainers(all) {
+        all = typeof all === 'undefined' ? false : all;
         $('.loader').show();
-        $.getJSON('/api/containers', appendContainers);
+        $.getJSON('/api/containers?all=' + all, appendContainers);
     }
     updateContainers();
     setInterval(updateContainers, 300000);
@@ -101,5 +115,16 @@ $(function () {
         $('.loader').show();
 
         $.getJSON('/api/containers?action=restart&domain=' + domain, appendContainers);
+    });
+
+    // Show all/less.
+    $('.show-all').on('click', function(e) {
+        e.preventDefault();
+
+        var $this = $(this);
+        updateContainers($this.text() === 'Show all');
+
+        var text = $this.attr('data-text');
+        $this.attr('data-text', $this.text()).text(text);
     });
 });
