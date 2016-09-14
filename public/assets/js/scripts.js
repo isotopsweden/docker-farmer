@@ -87,11 +87,6 @@ $(function () {
     updateContainers();
     setInterval(updateContainers, 300000);
 
-    // Fetch configuration.
-    $.getJSON('/api/config', function (res) {
-        $('.domain').html('<a href="' + res.Domain + '">' + res.Domain + '</a>');
-    });
-
     // Delete a container.
     $(document.body).on('click', '.container-actions .delete', function(e) {
         e.preventDefault();

@@ -3,6 +3,7 @@ package main
 import (
 	"flag"
 	"fmt"
+	"html/template"
 	"log"
 	"net/http"
 	"os"
@@ -19,7 +20,7 @@ var (
 
 // path will return right path for file, looks at the
 // given file first and then looks in the executable folder.
-func path(file string) string {
+func realpath(file string) string {
 	if _, err := os.Stat(file); err == nil {
 		return file
 	}
@@ -37,7 +38,7 @@ func main() {
 	flag.Parse()
 
 	// Init config.
-	config.Init(path(*configFlag))
+	config.Init(realpath(*configFlag))
 	c := config.Get()
 
 	if c.Listen[0] == ':' {
@@ -45,7 +46,19 @@ func main() {
 	}
 
 	// Index route.
-	http.Handle("/", http.FileServer(http.Dir(path(*publicFlag))))
+	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		templates := template.Must(template.ParseFiles(realpath("public/index.html")))
+		err := templates.ExecuteTemplate(w, "index.html", map[string]interface{}{
+			"Config": c,
+		})
+
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+		}
+	})
+
+	// Assets route.
+	http.Handle("/assets/", http.StripPrefix("/assets/", http.FileServer(http.Dir(realpath(*publicFlag)+"/assets"))))
 
 	// Config api route.
 	http.HandleFunc("/api/config", handlers.ConfigHandler)
