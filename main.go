@@ -47,7 +47,7 @@ func main() {
 
 	// Index route.
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		templates := template.Must(template.ParseFiles(realpath("public/index.html")))
+		templates := template.Must(template.ParseFiles(realpath(*publicFlag) + "/index.html"))
 		err := templates.ExecuteTemplate(w, "index.html", map[string]interface{}{
 			"Config": c,
 		})
