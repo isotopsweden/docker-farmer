@@ -5,7 +5,7 @@ $(function () {
      *
      * @param {array} containers
      */
-    function appendContainers(containers, all) {
+    function appendContainers(containers) {
         var $sites = $('.sites table tbody');
         var keys = ['Id', 'Image', 'State', 'Status'];
         var keep = [];
@@ -57,7 +57,7 @@ $(function () {
             }
         }
 
-        if (keep.length > 1 || !all) {
+        if (keep.length > 1 || !window.all) {
             $sites.find('tr').each(function () {
                 var $this = $(this);
 
@@ -72,17 +72,13 @@ $(function () {
 
     /**
      * Update containers.
-     *
-     * @param {bool} all
      */
-    function updateContainers(all) {
-        all = typeof all === 'undefined' ? false : all;
+    function updateContainers() {
+        window.all = typeof window.all === 'undefined' ? false : window.all;
 
         $('.loader').show();
 
-        $.getJSON('/api/containers?all=' + all, function(res) {
-            appendContainers(res, all);
-        });
+        $.getJSON('/api/containers?all=' + window.all, appendContainers);
     }
     updateContainers();
     setInterval(updateContainers, 300000);
@@ -125,7 +121,8 @@ $(function () {
         e.preventDefault();
 
         var $this = $(this);
-        updateContainers($this.text() === 'Show all');
+        window.all = $this.text() === 'Show all';
+        updateContainers();
 
         var text = $this.attr('data-text');
         $this.attr('data-text', $this.text()).text(text);
