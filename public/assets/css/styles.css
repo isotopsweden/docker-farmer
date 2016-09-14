@@ -25,6 +25,11 @@ header h1 {
     font-size: 20px;
 }
 
+h2 {
+    border-bottom: 1px #eaeaea solid;
+    font-size: 18px;
+}
+
 .left {
     float: left;
 }
@@ -39,13 +44,8 @@ header h1 {
     max-width: 100%;
 }
 
-.sites {
+.container > div {
     padding: 10px;
-}
-
-.sites h2 {
-    border-bottom: 1px #eaeaea solid;
-    font-size: 18px;
 }
 
 .sites table {
