@@ -1,0 +1,7 @@
+package: github.com/isotopsweden/docker-farmer
+import:
+- package: github.com/docker/docker
+  subpackages:
+  - api/types
+  - client
+- package: github.com/kardianos/osext

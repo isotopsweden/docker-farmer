@@ -1,4 +1,3 @@
-farmer
-tmp
-vendor
-config.json
+/farmer
+/tmp
+/config.json
