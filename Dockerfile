@@ -4,7 +4,7 @@ FROM golang:latest
 ADD . /go/src/github.com/isotopsweden/docker-farmer
 
 # Install deps.
-RUN cd /go/src/github.com/isotopsweden/docker-farmer && make deps
+RUN cd /go/src/github.com/isotopsweden/docker-farmer
 
 # Install docker farmer.
 RUN go install github.com/isotopsweden/docker-farmer
