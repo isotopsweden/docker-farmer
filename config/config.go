@@ -28,6 +28,10 @@ func Init(s string) {
 
 	json.Unmarshal(file, &config)
 
+	if c.Title == "" {
+		c.Title = "Farmer"
+	}
+
 	c = config
 }
 
@@ -49,6 +53,7 @@ type Config struct {
 	Containers struct {
 		Exclude []string
 	}
+	Title string
 }
 
 // Get will return the config struct.

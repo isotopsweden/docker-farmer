@@ -21,7 +21,8 @@ Example configuration:
     "listen": ":80",
     "containers": {
         "exclude": ["redis"]
-    }
+    },
+    "title": "Farmer"
 }
 ```
 
