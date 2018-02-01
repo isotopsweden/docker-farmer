@@ -28,11 +28,11 @@ func Init(s string) {
 
 	json.Unmarshal(file, &config)
 
+	c = config
+
 	if c.Title == "" {
 		c.Title = "Farmer"
 	}
-
-	c = config
 }
 
 // Config represents a config struct.
