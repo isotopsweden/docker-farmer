@@ -49,6 +49,7 @@ type Config struct {
 		Host    string
 		Version string
 	}
+	Links      map[string]string
 	Listen     string
 	Containers struct {
 		Exclude []string

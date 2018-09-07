@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"flag"
 	"fmt"
 	"html/template"
@@ -47,9 +48,16 @@ func main() {
 
 	// Index route.
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		links, err := json.Marshal(c.Links)
+
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+		}
+
 		templates := template.Must(template.ParseFiles(realpath(*publicFlag) + "/index.html"))
-		err := templates.ExecuteTemplate(w, "index.html", map[string]interface{}{
+		err = templates.ExecuteTemplate(w, "index.html", map[string]interface{}{
 			"Config": c,
+			"Links":  template.JS(string(links)),
 		})
 
 		if err != nil {

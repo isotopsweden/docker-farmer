@@ -12,5 +12,8 @@
     "listen": ":80",
     "containers": {
         "exclude": ["redis"]
+    },
+    "links": {
+        "jira": "http://jira.org/browse/{{ .id }}"
     }
 }

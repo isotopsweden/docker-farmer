@@ -95,11 +95,11 @@ h2 {
     background-color: #E02E2E;
 }
 
-.container-actions .restart {
+.container-actions .restart, .container-actions .btn {
     background-color: #6580BD;
 }
 
-.container-actions .restart:hover {
+.container-actions .restart:hover, .container-actions .btn:hover {
     background-color: #4461A4;
 }
 
