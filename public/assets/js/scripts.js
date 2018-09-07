@@ -90,7 +90,7 @@ $(function () {
 
         $('.loader').show();
 
-        $.getJSON('http://proxy.test/?all=' + window.all, appendContainers);
+        $.getJSON('/api/containers?all=' + window.all, appendContainers);
     }
     updateContainers();
     setInterval(updateContainers, 300000);
