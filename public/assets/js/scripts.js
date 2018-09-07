@@ -52,14 +52,16 @@ $(function () {
 
                 var links = [];
 
-                for (var key in farmer.links) {
-                    var id = /(\w+\-\d+)/.exec(url);
+                if (typeof farmer !== 'undefined') {
+                    for (var key in farmer.links) {
+                        var id = /(\w+\-\d+)/.exec(url);
 
-                    if (!id || !id.length) {
-                        continue;
+                        if (!id || !id.length) {
+                            continue;
+                        }
+
+                        links.push('<a class="btn" href="' + farmer.links[key].replace('{id}', id[0].toUpperCase()) + '" target="_blank">' + key + '</a>');
                     }
-
-                    links.push('<a class="btn" href="' + farmer.links[key].replace('{id}', id[0].toUpperCase()) + '" target="_blank">' + key + '</a>');
                 }
 
                 html.push('<td class="container-actions"><a href="#" class="restart">restart</a><a href="#" class="delete">delete</a>' + links.join('') + '</td>');
