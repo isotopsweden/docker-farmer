@@ -53,7 +53,6 @@ $(function () {
                 var links = [];
 
                 if (typeof farmer !== 'undefined') {
-                    // replace url for all links that contains {url}.
                     var values = {
                         '{id}': /(\w+\-\d+)/.exec(url),
                         '{url}': url,
