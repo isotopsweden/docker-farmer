@@ -53,14 +53,27 @@ $(function () {
                 var links = [];
 
                 if (typeof farmer !== 'undefined') {
+                    // replace {id} if id is found in url.
                     for (var key in farmer.links) {
                         var id = /(\w+\-\d+)/.exec(url);
+                        var link = farmer.links[key];
 
                         if (!id || !id.length) {
                             continue;
                         }
 
-                        links.push('<a class="btn" href="' + farmer.links[key].replace('{id}', id[0].toUpperCase()) + '" target="_blank">' + key + '</a>');
+                        links.push('<a class="btn" href="' + link.replace('{id}', id[0].toUpperCase()) + '" target="_blank">' + key + '</a>');
+                    }
+
+                    // replace url for all links that contains {url}.
+                    for (var key in farmer.links) {
+                        var link = farmer.links[key];
+
+                        if (link.indexOf('{url}') === -1) {
+                            continue;
+                        }
+
+                        links.push('<a class="btn" href="' + link.replace('{url}', url) + '" target="_blank">' + key + '</a>');
                     }
                 }
 
